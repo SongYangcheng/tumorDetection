@@ -1,0 +1,15 @@
+*mlruns/
+.idea/
+.vscode/
+*logs/
+*pth/
+*pth
+*__pycache__/
+.gitee/
+.venv/
+requirements.in
+*uploads/
+data/
+*.pt
+copilot-instructions.md
+__pycache__/
