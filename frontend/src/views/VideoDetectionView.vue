@@ -406,9 +406,10 @@ onUnmounted(() => {
 <style scoped>
 .video-detection {
     min-height: 100vh;
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    background: var(--background);
     color: var(--text);
     padding: 20px;
+    transition: var(--transition-theme);
 }
 
 .video-header {
@@ -420,9 +421,8 @@ onUnmounted(() => {
     font-size: 32px;
     font-weight: 700;
     margin: 0 0 10px 0;
-    background: linear-gradient(135deg, var(--primary), var(--accent));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    color: var(--text);
+    transition: var(--transition-theme);
 }
 
 .subtitle {
@@ -439,7 +439,7 @@ onUnmounted(() => {
 
 .tab-btn {
     padding: 12px 24px;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--panel);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     color: var(--text);
@@ -448,13 +448,13 @@ onUnmounted(() => {
 }
 
 .tab-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: var(--surface);
 }
 
 .tab-btn.active {
     background: var(--primary);
     border-color: var(--primary);
-    color: white;
+    color: #ffffff !important;
 }
 
 .upload-section,
@@ -465,10 +465,11 @@ onUnmounted(() => {
 
 .upload-card,
 .stream-card {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-lg);
     padding: 30px;
+    transition: var(--transition-theme);
 }
 
 .upload-card h2,
@@ -488,7 +489,7 @@ onUnmounted(() => {
 
 .upload-zone:hover {
     border-color: var(--primary);
-    background: rgba(37, 99, 235, 0.05);
+    background: var(--panel);
 }
 
 .upload-zone svg {
@@ -519,14 +520,15 @@ onUnmounted(() => {
     width: 100%;
     max-height: 400px;
     border-radius: var(--radius-md);
-    background: #000;
+    background: #000000;
 }
 
 .video-info {
     margin: 15px 0;
     padding: 15px;
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--panel);
     border-radius: var(--radius-md);
+    transition: var(--transition-theme);
 }
 
 .video-info p {

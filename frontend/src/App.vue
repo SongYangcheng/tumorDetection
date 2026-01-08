@@ -26,6 +26,7 @@
       <header v-if="showSidebar" class="topbar">
         <div class="crumb">{{ route.meta?.title || '智能术前决策平台' }}</div>
         <div class="top-actions">
+          <ThemeToggle />
           <router-link class="chip" to="/dashboard">实时总览</router-link>
           <router-link class="chip" to="/data">数据</router-link>
           <div class="status-dot">
@@ -44,6 +45,7 @@
 <script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+import ThemeToggle from '@/components/ThemeToggle.vue'
 import { useUserStore } from '@/stores/user'
 
 const router = useRouter()
@@ -114,7 +116,7 @@ router.afterEach(() => {
   place-items: center;
   font-weight: 800;
   letter-spacing: 0.02em;
-  color: #fff;
+  color: #ffffff;
   box-shadow: 0 12px 24px rgba(37, 99, 235, 0.35);
 }
 
@@ -126,6 +128,11 @@ router.afterEach(() => {
 .brand-text .subtitle {
   color: var(--text-muted);
   font-size: 13px;
+}
+
+.brand-text .title {
+  color: var(--text);
+  transition: var(--transition-theme);
 }
 
 .side-menu {
@@ -140,20 +147,20 @@ router.afterEach(() => {
   text-decoration: none;
   color: var(--text-muted);
   border: 1px solid transparent;
-  transition: 0.2s ease;
+  transition: all 0.2s ease;
   font-weight: 600;
   letter-spacing: 0.01em;
 }
 
 .side-link:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
+  color: var(--text);
+  border-color: var(--border-hover);
+  background: var(--btn-bg);
 }
 
 .side-link.router-link-exact-active {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.16);
+  color: var(--text);
+  border-color: var(--primary);
   background: linear-gradient(135deg, rgba(37, 99, 235, 0.2), rgba(56, 189, 248, 0.18));
 }
 
@@ -163,7 +170,12 @@ router.afterEach(() => {
 
 .btn.ghost {
   width: 100%;
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--btn-bg);
+  transition: var(--transition-theme);
+}
+
+.btn.ghost:hover {
+  background: var(--btn-bg-hover);
 }
 
 .main {
@@ -179,13 +191,16 @@ router.afterEach(() => {
   padding: 14px 18px;
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--panel);
   box-shadow: var(--shadow);
+  transition: var(--transition-theme);
 }
 
 .crumb {
   font-weight: 700;
   letter-spacing: 0.01em;
+  color: var(--text);
+  transition: var(--transition-theme);
 }
 
 .top-actions {
@@ -200,12 +215,13 @@ router.afterEach(() => {
   border: 1px solid var(--border);
   color: var(--text-muted);
   text-decoration: none;
-  transition: 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .chip:hover {
-  color: #fff;
-  border-color: rgba(255, 255, 255, 0.16);
+  color: var(--text);
+  border-color: var(--border-hover);
+  background: var(--btn-bg-hover);
 }
 
 .status-dot {

@@ -28,7 +28,7 @@
         <p>{{ niiUploadStatus }}</p>
       </div>
 
-      <h4 style="margin-top: 2rem; color: #94a3b8;">或选择已上传的NII影像</h4>
+      <h4 style="margin-top: 2rem; color: var(--text-muted);">或选择已上传的NII影像</h4>
       <div class="image-grid">
         <div v-for="img in availableImages" :key="img.id" class="image-card nii-card" @click="selectImage(img.id)">
           <div class="nii-icon">📁</div>
@@ -215,15 +215,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, nextTick } from 'vue'
+import { ref, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { useThemeStore } from '@/stores/theme'
+import { storeToRefs } from 'pinia'
 import { api } from '@/services/api'
 import { testAuthentication } from '@/utils/auth-test'
 
 const route = useRoute()
 const router = useRouter()
+
+// 主题相关
+const themeStore = useThemeStore()
+const { currentTheme } = storeToRefs(themeStore)
 
 // 状态
 const currentImageId = ref<number | null>(null)
@@ -276,6 +282,14 @@ onMounted(async () => {
 
 onUnmounted(() => {
   disposeThreeJS()
+})
+
+// 监听主题变化，更新3D场景颜色
+watch(currentTheme, (newTheme) => {
+  if (scene) {
+    const bgColor = newTheme === 'dark' ? 0x0f172a : 0xf8fafc
+    scene.background = new THREE.Color(bgColor)
+  }
 })
 
 // NII文件上传
@@ -469,7 +483,9 @@ async function initThreeJS() {
 
   // 场景
   scene = new THREE.Scene()
-  scene.background = new THREE.Color(0x2a2f3a)
+  // 根据主题设置背景色
+  const bgColor = currentTheme.value === 'dark' ? 0x0f172a : 0xf8fafc
+  scene.background = new THREE.Color(bgColor)
 
   // 相机
   camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000)
@@ -490,11 +506,14 @@ async function initThreeJS() {
   controls.enableRotate = true  // 启用旋转
   controls.autoRotate = false  // 禁用自动旋转
 
-  // 光照
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+  // 光照 - 根据主题调整
+  const ambientIntensity = currentTheme.value === 'dark' ? 0.5 : 0.7
+  const directionalIntensity = currentTheme.value === 'dark' ? 0.7 : 0.9
+  
+  const ambientLight = new THREE.AmbientLight(0xffffff, ambientIntensity)
   scene.add(ambientLight)
 
-  const directionalLight = new THREE.DirectionalLight(0xffffff, 0.7)
+  const directionalLight = new THREE.DirectionalLight(0xffffff, directionalIntensity)
   directionalLight.position.set(100, 100, 50)
   directionalLight.castShadow = true
   scene.add(directionalLight)
@@ -971,8 +990,9 @@ async function savePlan() {
   padding: 2rem;
   max-width: 1600px;
   margin: 0 auto;
-  background: linear-gradient(135deg, #0b1221 0%, #0b1530 100%);
+  background: var(--background);
   min-height: 100vh;
+  transition: var(--transition-theme);
 }
 
 .planning-header {
@@ -982,14 +1002,16 @@ async function savePlan() {
 
 .planning-header h1 {
   font-size: 2rem;
-  color: #e5e7eb;
+  color: var(--text);
   margin-bottom: 0.5rem;
   font-weight: 700;
+  transition: var(--transition-theme);
 }
 
 .subtitle {
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 1rem;
+  transition: var(--transition-theme);
 }
 
 /* 图像选择器 */
@@ -999,8 +1021,9 @@ async function savePlan() {
 
 .image-selector h3 {
   margin-bottom: 1.5rem;
-  color: #e5e7eb;
+  color: var(--text);
   font-weight: 600;
+  transition: var(--transition-theme);
 }
 
 .selector-header {
@@ -1031,7 +1054,8 @@ async function savePlan() {
 
 .hint {
   font-size: 0.75rem;
-  color: #94a3b8;
+  color: var(--text-muted);
+  transition: var(--transition-theme);
 }
 
 .upload-progress {
@@ -1039,15 +1063,17 @@ async function savePlan() {
   align-items: center;
   gap: 1rem;
   padding: 1.5rem;
-  background: rgba(59, 130, 246, 0.1);
-  border: 2px dashed rgba(59, 130, 246, 0.4);
+  background: var(--panel);
+  border: 2px dashed var(--primary);
   border-radius: 8px;
   margin-bottom: 1.5rem;
+  transition: var(--transition-theme);
 }
 
 .upload-progress p {
-  color: #60a5fa;
+  color: var(--primary);
   font-weight: 500;
+  transition: var(--transition-theme);
 }
 
 .image-grid {
@@ -1061,14 +1087,15 @@ async function savePlan() {
   border-radius: 8px;
   overflow: hidden;
   transition: transform 0.2s, box-shadow 0.2s;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border);
+  background: var(--surface);
 }
 
 .image-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-  border-color: #3b82f6;
+  border-color: var(--primary);
+  transition: var(--transition-theme);
 }
 
 .image-card img {
@@ -1085,21 +1112,23 @@ async function savePlan() {
 
 .filename {
   font-size: 0.875rem;
-  color: #e5e7eb;
+  color: var(--text);
   margin-bottom: 0.5rem;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  transition: var(--transition-theme);
 }
 
 .model-badge {
   display: inline-block;
   padding: 0.25rem 0.5rem;
-  background: #ede9fe;
-  color: #7c3aed;
+  background: rgba(124, 58, 237, 0.12);
+  color: var(--accent);
   border-radius: 4px;
   font-size: 0.75rem;
   font-weight: 500;
+  transition: var(--transition-theme);
 }
 
 /* NII文件卡片样式 */
@@ -1129,20 +1158,23 @@ async function savePlan() {
 .nii-card .filename {
   font-size: 0.875rem;
   font-weight: 500;
-  color: #e5e7eb;
+  color: var(--text);
   margin-bottom: 0.25rem;
   word-break: break-word;
+  transition: var(--transition-theme);
 }
 
 .nii-card .upload-time {
   font-size: 0.75rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   margin: 0;
+  transition: var(--transition-theme);
 }
 
 .nii-card:hover {
   background: rgba(59, 130, 246, 0.15);
-  border-color: #3b82f6;
+  border-color: var(--primary);
+  transition: var(--transition-theme);
 }
 
 .nii-card:hover .nii-icon {
@@ -1174,9 +1206,10 @@ async function savePlan() {
 }
 
 .panel-header h3 {
-  color: #e5e7eb;
+  color: var(--text);
   font-size: 1.125rem;
   font-weight: 600;
+  transition: var(--transition-theme);
 }
 
 .view-controls {
@@ -1199,7 +1232,8 @@ async function savePlan() {
 
 .btn-icon:hover {
   background: rgba(59, 130, 246, 0.15);
-  border-color: #3b82f6;
+  border-color: var(--primary);
+  transition: var(--transition-theme);
 }
 
 .viewer-container {
@@ -1220,15 +1254,16 @@ async function savePlan() {
 }
 
 .loading-overlay p {
-  color: #d1d5db;
+  color: var(--text-muted);
   margin-top: 1rem;
+  transition: var(--transition-theme);
 }
 
 .spinner {
   width: 48px;
   height: 48px;
-  border: 4px solid #4b5563;
-  border-top-color: #60a5fa;
+  border: 4px solid var(--border);
+  border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
 }
@@ -1245,7 +1280,8 @@ async function savePlan() {
   align-items: center;
   justify-content: center;
   height: 100%;
-  color: #9ca3af;
+  color: var(--text-muted);
+  transition: var(--transition-theme);
 }
 
 .empty-viewer svg {
@@ -1311,14 +1347,16 @@ async function savePlan() {
 
 .metric-label {
   font-size: 0.875rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   margin-bottom: 0.25rem;
+  transition: var(--transition-theme);
 }
 
 .metric-value {
   font-size: 1.25rem;
   font-weight: 600;
-  color: #e5e7eb;
+  color: var(--text);
+  transition: var(--transition-theme);
 }
 
 /* 手术路径规划 */
@@ -1329,8 +1367,9 @@ async function savePlan() {
 .path-planning label {
   display: block;
   font-size: 0.875rem;
-  color: #94a3b8;
+  color: var(--text-muted);
   margin-bottom: 0.5rem;
+  transition: var(--transition-theme);
 }
 
 .coord-input {
@@ -1341,11 +1380,12 @@ async function savePlan() {
 
 .coord-input input {
   padding: 0.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid var(--border);
   border-radius: 6px;
   font-size: 0.875rem;
   background: rgba(255, 255, 255, 0.05);
-  color: #e5e7eb;
+  color: var(--text);
+  transition: var(--transition-theme);
 }
 
 .path-result {
@@ -1363,13 +1403,15 @@ async function savePlan() {
 }
 
 .result-item .label {
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 0.875rem;
+  transition: var(--transition-theme);
 }
 
 .result-item .value {
   font-weight: 600;
-  color: #10b981;
+  color: var(--success);
+  transition: var(--transition-theme);
 }
 
 .warnings {
@@ -1379,9 +1421,10 @@ async function savePlan() {
 }
 
 .warning-text {
-  color: #f87171;
+  color: var(--error);
   font-size: 0.875rem;
   margin-bottom: 0.5rem;
+  transition: var(--transition-theme);
 }
 
 /* 按钮样式 */
@@ -1396,12 +1439,14 @@ async function savePlan() {
 }
 
 .btn-primary {
-  background: #3b82f6;
+  background: var(--primary);
   color: white;
+  transition: var(--transition-theme);
 }
 
 .btn-primary:hover:not(:disabled) {
-  background: #2563eb;
+  background: var(--primary-dark);
+  transition: var(--transition-theme);
 }
 
 .btn-primary:disabled {
@@ -1411,8 +1456,9 @@ async function savePlan() {
 
 .btn-secondary {
   background: rgba(255, 255, 255, 0.1);
-  color: #e5e7eb;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--text);
+  border: 1px solid var(--border);
+  transition: var(--transition-theme);
 }
 
 .btn-secondary:hover {

@@ -183,7 +183,8 @@ onMounted(() => {
 
 .page-header h2 {
   margin: 6px 0 6px;
-  color: #fff;
+  color: var(--text);
+  transition: var(--transition-theme);
 }
 
 .profile-grid {
@@ -206,7 +207,8 @@ onMounted(() => {
 
 .panel h3 {
   margin: 4px 0;
-  color: #fff;
+  color: var(--text);
+  transition: var(--transition-theme);
 }
 
 .pill {
@@ -217,9 +219,10 @@ onMounted(() => {
   border-radius: 999px;
   background: rgba(56, 189, 248, 0.12);
   border: 1px solid rgba(56, 189, 248, 0.35);
-  color: #38bdf8;
+  color: var(--primary-2);
   font-weight: 700;
   font-size: 12px;
+  transition: var(--transition-theme);
 }
 
 .info-list {
@@ -242,8 +245,9 @@ onMounted(() => {
 }
 
 .value {
-  color: #fff;
+  color: var(--text);
   font-weight: 700;
+  transition: var(--transition-theme);
 }
 
 .form {
@@ -269,8 +273,9 @@ onMounted(() => {
 
 .field input:focus {
   outline: none;
-  border-color: rgba(56, 189, 248, 0.6);
+  border-color: var(--primary-2);
   box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+  transition: var(--transition-theme);
 }
 
 .submit {
