@@ -1,23 +1,110 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
+/* ========== 基础变量 ========== */
 :root {
   --font-sans: 'Manrope', 'Segoe UI', 'Helvetica Neue', system-ui, -apple-system, sans-serif;
-  --bg: #0f172a;
-  --bg-muted: #0b1221;
-  --panel: rgba(255, 255, 255, 0.04);
-  --card: #0f172a;
-  --surface: #0b1221;
-  --border: rgba(255, 255, 255, 0.08);
-  --primary: #2563eb;
-  --primary-2: #38bdf8;
-  --accent: #22d3ee;
-  --text: #e5e7eb;
-  --text-muted: #94a3b8;
-  --shadow: 0 20px 60px rgba(13, 42, 90, 0.25);
   --radius-lg: 18px;
   --radius-md: 14px;
   --radius-sm: 10px;
   --sidebar-width: 260px;
+
+  /* 动画过渡 */
+  --transition-theme: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* ========== 深色主题 (默认) ========== */
+:root,
+[data-theme='dark'] {
+  --bg: #0f172a;
+  --bg-muted: #0b1221;
+  --bg-overlay: rgba(15, 23, 42, 0.95);
+  --panel: rgba(255, 255, 255, 0.04);
+  --card: #0f172a;
+  --surface: #0b1221;
+  --surface-dark: #000000;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.2);
+  --primary: #2563eb;
+  --primary-2: #38bdf8;
+  --primary-hover: #1d4ed8;
+  --accent: #22d3ee;
+  --accent-hover: #06b6d4;
+  --text: #e5e7eb;
+  --text-secondary: #cbd5e1;
+  --text-muted: #94a3b8;
+  --text-disabled: #64748b;
+  --shadow: 0 20px 60px rgba(13, 42, 90, 0.25);
+  --shadow-sm: 0 4px 12px rgba(13, 42, 90, 0.15);
+  --shadow-lg: 0 25px 70px rgba(13, 42, 90, 0.35);
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+
+  /* 渐变背景 */
+  --bg-gradient: radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.08), transparent 40%),
+    radial-gradient(circle at 80% 0%, rgba(37, 99, 235, 0.12), transparent 35%),
+    linear-gradient(135deg, #0b1221, #0b1530 70%);
+
+  /* 卡片渐变 */
+  --card-gradient: linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+
+  /* 按钮背景 */
+  --btn-bg: rgba(255, 255, 255, 0.04);
+  --btn-bg-hover: rgba(255, 255, 255, 0.08);
+  --btn-primary-gradient: linear-gradient(135deg, #2563eb, #38bdf8);
+  --btn-primary-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+
+  /* 输入框背景 */
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --input-bg-focus: rgba(255, 255, 255, 0.08);
+}
+
+/* ========== 亮色主题 ========== */
+[data-theme='light'] {
+  --bg: #ffffff;
+  --bg-muted: #f8fafc;
+  --bg-overlay: rgba(255, 255, 255, 0.95);
+  --panel: rgba(15, 23, 42, 0.04);
+  --card: #ffffff;
+  --surface: #f1f5f9;
+  --surface-dark: #000000;
+  --border: rgba(15, 23, 42, 0.15);
+  --border-hover: rgba(15, 23, 42, 0.3);
+  --primary: #2563eb;
+  --primary-2: #0ea5e9;
+  --primary-hover: #1d4ed8;
+  --accent: #0891b2;
+  --accent-hover: #0e7490;
+  --text: #0f172a;
+  --text-secondary: #1e293b;
+  --text-muted: #475569;
+  --text-disabled: #94a3b8;
+  --shadow: 0 20px 60px rgba(15, 23, 42, 0.08);
+  --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
+  --shadow-lg: 0 25px 70px rgba(15, 23, 42, 0.12);
+  --success: #059669;
+  --warning: #d97706;
+  --error: #dc2626;
+  --info: #2563eb;
+
+  /* 渐变背景 */
+  --bg-gradient: radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.04), transparent 40%),
+    radial-gradient(circle at 80% 0%, rgba(14, 165, 233, 0.06), transparent 35%),
+    linear-gradient(135deg, #ffffff, #f8fafc 70%);
+
+  /* 卡片渐变 */
+  --card-gradient: linear-gradient(145deg, rgba(255, 255, 255, 1), rgba(248, 250, 252, 0.8));
+
+  /* 按钮背景 */
+  --btn-bg: rgba(15, 23, 42, 0.04);
+  --btn-bg-hover: rgba(15, 23, 42, 0.08);
+  --btn-primary-gradient: linear-gradient(135deg, #2563eb, #0ea5e9);
+  --btn-primary-shadow: 0 12px 30px rgba(37, 99, 235, 0.25);
+
+  /* 输入框背景 */
+  --input-bg: rgba(15, 23, 42, 0.05);
+  --input-bg-focus: rgba(15, 23, 42, 0.08);
 }
 
 * {
@@ -27,12 +114,10 @@
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background:
-    radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.08), transparent 40%),
-    radial-gradient(circle at 80% 0%, rgba(37, 99, 235, 0.12), transparent 35%),
-    linear-gradient(135deg, #0b1221, #0b1530 70%);
+  background: var(--bg-gradient);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
+  transition: var(--transition-theme);
 }
 
 a {
@@ -40,11 +125,12 @@ a {
 }
 
 .card {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.02));
+  background: var(--card-gradient);
   border: 1px solid var(--border);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow);
   backdrop-filter: blur(8px);
+  transition: var(--transition-theme);
 }
 
 .container {
@@ -66,37 +152,122 @@ a {
 .btn {
   border: 1px solid var(--border);
   color: var(--text);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--btn-bg);
   border-radius: 12px;
   height: 40px;
   padding: 0 14px;
   font-weight: 600;
   letter-spacing: 0.01em;
-  transition: 0.2s ease;
+  transition: all 0.2s ease;
+  cursor: pointer;
 }
 
 .btn:hover {
-  border-color: rgba(255, 255, 255, 0.2);
+  border-color: var(--border-hover);
+  background: var(--btn-bg-hover);
   transform: translateY(-1px);
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, #2563eb, #38bdf8);
+  background: var(--btn-primary-gradient);
   color: #fff;
   border-color: transparent;
-  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.35);
+  box-shadow: var(--btn-primary-shadow);
+}
+
+.btn-primary:hover {
+  box-shadow: var(--btn-primary-shadow), 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 .input,
 input,
 select,
 textarea {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--input-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius-md);
   color: var(--text);
   padding: 10px 12px;
   font-family: var(--font-sans);
+  transition: var(--transition-theme);
+}
+
+.input:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  background: var(--input-bg-focus);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* 主题切换按钮样式 */
+.theme-toggle {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--btn-bg);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--btn-bg-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+  color: var(--text);
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover svg {
+  transform: rotate(20deg);
+}
+
+/* 状态指示器样式优化 */
+.status-dot {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  background: var(--btn-bg);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: var(--transition-theme);
+}
+
+.pulse {
+  width: 8px;
+  height: 8px;
+  background: var(--success);
+  border-radius: 50%;
+  animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
 }
 
 .muted {
@@ -129,6 +300,7 @@ textarea {
   :root {
     --sidebar-width: 88px;
   }
+
   .layout-shell {
     grid-template-columns: var(--sidebar-width) 1fr;
   }
